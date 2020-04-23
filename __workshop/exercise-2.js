@@ -1,12 +1,12 @@
 // Exercise 2 - `getAddressPosition`
 // ---------------------------------
 
-function getAddressPosition(address) {
-  const requestObj = {
-    key: "<MY_API_KEY>",
-    q: address
-  };
-}
+// function getAddressPosition(address) {
+//   const requestObj = {
+//     key: "<MY_API_KEY>",
+//     q: address
+//   };
+// }
 
 // 1. Complete the code of this function to return a `Promise` for a lat/lng object
 // 2. Use the [OpenCage Data API](https://opencagedata.com/) to do this
@@ -16,31 +16,32 @@ function getAddressPosition(address) {
 //     - disregard the `.env` guidelines for now.
 // 3. Once you have it working, pass it a few address to see what the responses look like.
 // 4. Make sure to only return an object with lat/lng and not the whole response
-
-const opencage = require("opencage-api-client");
+const opencage = require('opencage-api-client');
 
 function getAddressPosition(address) {
   const requestObj = {
-    key: "f7cdfbb4f26443abbdeb34b1d1838e70",
+    key: "88a97dcaa1e547769c0823f907958a4c",
     q: address
   };
-
-  return opencage
-    .geocode(requestObj)
+  return opencage.geocode(requestObj)
     .then(data => {
-      // if (data.status.code == 200) {
-      // if (data.results.length > 0) {
-      const place = data.results[0];
-      console.log(place.geometry);
-      return place;
-      // }
-      // } else {
-      //     // other possible response codes:
-      //     // https://opencagedata.com/api#codes
-      //     console.log('error', data.status.message);
-      // }
+      if (data.status.code == 200) {
+        if (data.results.length > 0) {
+          const place = data.results[0];
+
+          return place.geometry;
+        }
+      } else {
+        console.log('you got mai-- error', data.status.message);
+      }
     })
-    .catch(error => console.log("error", error.message));
+    .then(data => {
+      console.log(data);
+      return data;
+    })
+    .catch(err => console.log('err: '.err));
+
+
 }
 
-console.log(getAddressPosition("882 rue grou, h4b 2c7"));
+getAddressPosition('12575 rue bedford');

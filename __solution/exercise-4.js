@@ -13,34 +13,39 @@
 
 // Given an address as a string, returns the temperature
 // Use the getCurrentTemperatureAtPosition function
-const opencage = require('opencage-api-client');
-const DarkSky = require('dark-sky');
-const darksky = new DarkSky('fc455f20f86ba62221cb097a6d630fda');
+const response = require("require-promise");
+const opencage = require("opencage-api-client");
+const Darksky = require("dark-sky");
+const darksky = new Darksky("883397a0eea3aa280f191b689552a5c6");
 
 function getCurrentTemperature(address) {
   const requestObj = {
-    key: "88a97dcaa1e547769c0823f907958a4c",
+    key: "f7cdfbb4f26443abbdeb34b1d1838e70",
     q: address
   };
   opencage
     .geocode(requestObj)
     .then(data => {
-      if (data.status.code == 200) {
-        if (data.results.length > 0) {
-          const place = data.results[0];
-          return place.geometry;
-        }
-      } else {
-        console.log('you got mai-- error', data.status.message);
-      }
+      const place = data.results[0];
+      console.log(place.geometry);
+      return place;
+      // if (data.status.code == 200) {
+      //   if (data.results.length > 0) {
+      //     let place = data.resuts[0];
+      //     console.log(place.geometry);
+      //   } else console.log("error 1", error.message);
+      // }
     })
     .then(place => {
       darksky
-        .latitude(place.lat)
-        .longitude(place.lng)
+        .latitude(place.geometry.lat)
+        .longitude(place.geometry.lng)
         .get()
-        .then(data => console.log(data.currently.temperature));
+        .then(temp => console.log(temp.currently.temperature));
     })
-    .catch(err => console.log('err: '.err));
+    .catch(error => {
+      console.log("error 2", error.message);
+    });
 }
-getCurrentTemperature('12575 rue bedford');
+
+console.log(getCurrentTemperature("882 rue grou h4b 2c7"));
